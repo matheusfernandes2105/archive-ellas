@@ -6,8 +6,7 @@
  */
 export const storeConfig = Object.freeze({
   // Número no formato internacional: 55 + DDD + número (com ou sem formatação).
-  // ATENÇÃO: número fictício — troque pelo WhatsApp real da loja.
-  whatsapp: "5592900000000",
+  whatsapp: "5511941702706", // +55 (11) 94170-2706
 
   // Só são aceitos links https destes domínios (ver loadStoreConfig.js).
   instagram: "https://www.instagram.com/",

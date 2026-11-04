@@ -1,109 +1,88 @@
 /**
- * Catálogo mockado da primeira coleção ELLAS — edite aqui.
+ * Catálogo da primeira coleção ELLAS — edite aqui.
  *
  * Os dados são validados pelo domínio ao carregar o site: um campo inválido
  * (preço negativo, imagem fora de assets/produtos/, SKU fora do padrão etc.)
  * impede o catálogo de aparecer e o erro é mostrado no console do navegador.
+ * Rode `npm test` depois de editar para conferir antes de publicar.
  *
+ * Campos:
  * - categoria: "aneis" | "brincos" | "colares" | "pulseiras"
- * - preco e acrescimo: em reais, com até 2 casas decimais. O acréscimo soma ao preço base
- *   (use valor negativo para desconto).
- * - tamanhos: opcional (anéis/colares). Remova o campo para peças sem tamanho.
- * - imagem: arquivo dentro de assets/produtos/ (svg, png, jpg, webp ou avif).
+ * - preco: em reais, com até 2 casas decimais.
+ * - resumo: frase curta exibida no card (até 120 caracteres).
+ * - imagem: foto 4:5 em assets/produtos/. Para cada "nome.webp" (1200px) deve
+ *   existir também "nome-640.webp", a versão leve usada no celular.
+ * - selo (opcional): etiqueta sobre a foto, ex. "Nova".
+ * - acabamentos / tamanhos (opcionais): só para peças com variação. Sem eles,
+ *   o cliente apenas compra a peça, como nesta coleção.
+ *
+ * ATENÇÃO: os preços abaixo são PROVISÓRIOS — substitua pelos valores reais.
  */
 export const productsData = Object.freeze([
   {
-    id: "anel-raiz",
+    id: "anel-ventos-do-sul",
     sku: "EL-01",
-    nome: "Anel Raiz",
+    nome: "Anel Ventos do Sul",
     categoria: "aneis",
-    selo: "Nova",
-    preco: 249,
-    imagem: "assets/produtos/anel-raiz.svg",
-    resumo: "Aro robusto com superfície martelada à mão.",
+    preco: 289, // PREÇO PROVISÓRIO
+    imagem: "assets/produtos/anel-ventos-do-sul.webp",
+    resumo: "Anel orgânico com cravação delicada.",
     descricao:
-      "Inspirado no que cresce firme e sem pressa. Cada Anel Raiz é martelado à mão, então nenhum é igual ao outro: as marcas do processo ficam na peça, como raízes que contam por onde passaram.",
-    acabamentos: [
-      { nome: "Prata 925", acrescimo: 0 },
-      { nome: "Prata 925 com banho de ouro 18k", acrescimo: 60 },
-    ],
-    tamanhos: ["12", "14", "16", "18", "20", "22"],
+      "Inspirado na fluidez dos elementos naturais e na suavidade do vento, este anel autoral traz formas orgânicas esculpidas à mão, pontuadas por zircônias delicadas. Uma joia pensada para carregar significados e acompanhar a sua identidade em todos os momentos.",
   },
   {
-    id: "brincos-pos-chuva",
+    id: "anel-rastro-do-tempo",
     sku: "EL-02",
-    nome: "Brincos Pós-Chuva",
-    categoria: "brincos",
-    selo: "Mais desejado",
-    preco: 219,
-    imagem: "assets/produtos/brincos-pos-chuva.svg",
-    resumo: "Gotas orgânicas que balançam com leveza.",
-    descricao:
-      "Nascidos do cheiro de terra molhada depois da chuva. As gotas têm volumes levemente diferentes, pensadas para se mover com você e refletir a luz de um jeito sempre novo.",
-    acabamentos: [
-      { nome: "Banho de ouro 18k", acrescimo: 0 },
-      { nome: "Prata 925", acrescimo: -20 },
-    ],
-  },
-  {
-    id: "colar-caramelo",
-    sku: "EL-03",
-    nome: "Colar Caramelo",
-    categoria: "colares",
-    preco: 389,
-    imagem: "assets/produtos/colar-caramelo.svg",
-    resumo: "Pingente oval com pedra em tom âmbar.",
-    descricao:
-      "Calor e luminosidade em forma de pingente. A pedra em tom âmbar é envolvida por uma moldura orgânica e acompanha corrente delicada, que pode ser ajustada em dois comprimentos.",
-    acabamentos: [
-      { nome: "Banho de ouro 18k", acrescimo: 0 },
-      { nome: "Prata 925", acrescimo: -30 },
-    ],
-    tamanhos: ["45 cm", "60 cm"],
-    rotuloTamanho: "Comprimento",
-  },
-  {
-    id: "bracelete-mare",
-    sku: "EL-04",
-    nome: "Bracelete Maré",
-    categoria: "pulseiras",
-    preco: 459,
-    imagem: "assets/produtos/bracelete-mare.svg",
-    resumo: "Bracelete aberto em ondas suaves.",
-    descricao:
-      "O desenho acompanha o movimento das marés: ondas que vão e voltam, sem pressa. Aberto atrás, se ajusta ao pulso com conforto e pode ser usado sozinho ou em composição.",
-    acabamentos: [
-      { nome: "Prata 925", acrescimo: 0 },
-      { nome: "Prata 925 com banho de ouro 18k", acrescimo: 90 },
-    ],
-  },
-  {
-    id: "argolas-terra-molhada",
-    sku: "EL-05",
-    nome: "Argolas Terra Molhada",
-    categoria: "brincos",
-    preco: 279,
-    imagem: "assets/produtos/argolas-terra-molhada.svg",
-    resumo: "Argolas encorpadas, de forma imperfeita.",
-    descricao:
-      "Argolas grossas com superfície irregular, que lembram a textura da terra depois da chuva. Marcantes no dia a dia, sem perder a leveza para usar por horas.",
-    acabamentos: [
-      { nome: "Banho de ouro 18k", acrescimo: 0 },
-      { nome: "Prata 925", acrescimo: -20 },
-    ],
-  },
-  {
-    id: "anel-duas",
-    sku: "EL-06",
-    nome: "Anel Duas",
+    nome: "Anel Rastro do Tempo",
     categoria: "aneis",
-    selo: "Edição especial",
-    preco: 329,
-    imagem: "assets/produtos/anel-duas.svg",
-    resumo: "Dois aros entrelaçados, prata e ouro.",
+    preco: 259, // PREÇO PROVISÓRIO
+    imagem: "assets/produtos/anel-rastro-do-tempo.webp",
+    resumo: "Anel texturizado martelado.",
     descricao:
-      "Uma homenagem à amizade que deu origem à ELLAS: dois universos diferentes que encontram beleza nas mesmas coisas. Um aro em prata e outro com banho de ouro, entrelaçados para sempre.",
-    acabamentos: [{ nome: "Prata 925 + banho de ouro 18k", acrescimo: 0 }],
-    tamanhos: ["12", "14", "16", "18", "20", "22"],
+      "Atemporal, marcante e profundamente expressivo. O Anel Rastro do Tempo possui uma superfície inteiramente martelada que captura a luz de forma única, celebrando a beleza daquilo que resiste e ganha personalidade com os anos.",
+  },
+  {
+    id: "anel-valsa-dourada",
+    sku: "EL-03",
+    nome: "Anel Valsa Dourada",
+    categoria: "aneis",
+    preco: 319, // PREÇO PROVISÓRIO
+    imagem: "assets/produtos/anel-valsa-dourada.webp",
+    resumo: "Anel orgânico envolvente dourado.",
+    descricao:
+      "Com um design sinuoso que parece dançar ao redor da pele, este anel traduz o encontro entre a força e a leveza. Suas curvas orgânicas trazem um relevo sutil que transforma o acessório em um verdadeiro objeto de desejo.",
+  },
+  {
+    id: "colar-elegia-de-prata",
+    sku: "EL-04",
+    nome: "Colar Elegia de Prata",
+    categoria: "colares",
+    preco: 349, // PREÇO PROVISÓRIO
+    imagem: "assets/produtos/colar-elegia-de-prata.webp",
+    resumo: "Colar com pingente orgânico e elos vazados.",
+    descricao:
+      "Uma ode à arquitetura das formas puras. O Colar Elegia combina uma corrente de elos irregulares a um pingente central de toque escovado, materializando a essência de transformar ideias e memórias em poesia para vestir.",
+  },
+  {
+    id: "brincos-sinfonia-fluida",
+    sku: "EL-05",
+    nome: "Brincos Sinfonia Fluida",
+    categoria: "brincos",
+    preco: 279, // PREÇO PROVISÓRIO
+    imagem: "assets/produtos/brincos-sinfonia-fluida.webp",
+    resumo: "Brincos longos pendentes orgânicos.",
+    descricao:
+      "Inspirados no ritmo e na atmosfera sensorial da música, estes brincos pendentes misturam hastes sinuosas a formas orgânicas suspensas. Uma joia expressiva que traz movimento, leveza e um forte apelo editorial para o visual.",
+  },
+  {
+    id: "argolas-atos-de-luz",
+    sku: "EL-06",
+    nome: "Argolas Atos de Luz",
+    categoria: "brincos",
+    preco: 239, // PREÇO PROVISÓRIO
+    imagem: "assets/produtos/argolas-atos-de-luz.webp",
+    resumo: "Argolas orgânicas texturizadas.",
+    descricao:
+      "Uma releitura contemporânea e artística do clássico. As Argolas Atos possuem ondulações orgânicas que brincam com o reflexo da luz, trazendo sofisticação, conforto e uma presença marcante para o dia a dia.",
   },
 ]);

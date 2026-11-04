@@ -1,5 +1,11 @@
-import { el, required, setSafeHref } from "../dom.js";
+import { el, isSafeSrcset, required, setSafeHref } from "../dom.js";
 import { installmentText } from "../format.js";
+import { productImageSources, SIZES } from "../images.js";
+
+/** Mesmo ponto de quebra do CSS em que a janela vira "bottom sheet". */
+const SHEET_LAYOUT = window.matchMedia("(max-width: 699.98px)");
+const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)");
+const SWIPE_CLOSE_THRESHOLD = 110;
 
 /**
  * Janela de detalhes do produto, com escolha de acabamento/tamanho.
@@ -26,11 +32,79 @@ export class ProductDialog {
     this.#getProductDetails = getProductDetails;
     this.#startPurchase = startPurchase;
 
-    required(dialog, "[data-dialog-close]").addEventListener("click", () => dialog.close());
+    required(dialog, "[data-dialog-close]").addEventListener("click", () => this.#close());
     dialog.addEventListener("click", (event) => {
-      if (event.target === dialog) dialog.close(); // clique fora do conteúdo
+      if (event.target === dialog) this.#close(); // toque fora do conteúdo
     });
-    dialog.addEventListener("close", () => document.body.classList.remove("no-scroll"));
+    dialog.addEventListener("close", () => {
+      document.body.classList.remove("no-scroll");
+      dialog.style.transform = "";
+      dialog.style.transition = "";
+    });
+    this.#enableSwipeToClose();
+  }
+
+  /** No celular, a janela desce antes de fechar (mesmo gesto do arrastar). */
+  #close() {
+    const dialog = this.#dialog;
+    if (!dialog.open) return;
+    if (!SHEET_LAYOUT.matches || REDUCED_MOTION.matches) {
+      dialog.close();
+      return;
+    }
+    dialog.style.transition = "transform 0.24s ease-in";
+    dialog.style.transform = "translateY(100%)";
+    window.setTimeout(() => dialog.close(), 230);
+  }
+
+  /**
+   * "Bottom sheet": arrastar para baixo, a partir do topo da janela, fecha.
+   * Arrastar para cima continua rolando o conteúdo normalmente.
+   */
+  #enableSwipeToClose() {
+    const dialog = this.#dialog;
+    /** @type {number | null} */
+    let startY = null;
+    let dy = 0;
+
+    dialog.addEventListener(
+      "touchstart",
+      (event) => {
+        startY = SHEET_LAYOUT.matches && event.touches.length === 1 && dialog.scrollTop <= 0 ? event.touches[0].clientY : null;
+        dy = 0;
+      },
+      { passive: true },
+    );
+
+    dialog.addEventListener(
+      "touchmove",
+      (event) => {
+        if (startY === null) return;
+        dy = event.touches[0].clientY - startY;
+        if (dy <= 0) {
+          dialog.style.transform = "";
+          return;
+        }
+        event.preventDefault(); // puxando para baixo: a janela acompanha o dedo
+        dialog.style.transition = "none";
+        dialog.style.transform = `translateY(${Math.round(dy)}px)`;
+      },
+      { passive: false },
+    );
+
+    const end = () => {
+      if (startY === null) return;
+      startY = null;
+      if (dy > SWIPE_CLOSE_THRESHOLD) {
+        this.#close();
+      } else {
+        dialog.style.transition = "transform 0.25s ease-out";
+        dialog.style.transform = "";
+      }
+      dy = 0;
+    };
+    dialog.addEventListener("touchend", end);
+    dialog.addEventListener("touchcancel", end);
   }
 
   /** @param {string} selector */
@@ -42,10 +116,18 @@ export class ProductDialog {
   async open(productId) {
     const view = await this.#getProductDetails.execute({ productId });
     this.#view = view;
-    this.#choice = { finishName: view.finishes[0].name, size: null };
+    this.#choice = { finishName: view.finishes[0]?.name ?? null, size: null };
 
     const img = /** @type {HTMLImageElement} */ (this.#part("[data-d-img]"));
-    img.src = view.image;
+    const sources = productImageSources(view.image);
+    if (sources.srcset && isSafeSrcset(sources.srcset)) {
+      img.sizes = SIZES.dialog;
+      img.srcset = sources.srcset;
+    } else {
+      img.removeAttribute("srcset");
+      img.removeAttribute("sizes");
+    }
+    img.src = sources.src;
     img.alt = `${view.name} — ${view.summary}`;
     this.#part("[data-d-cat]").textContent = view.category.label;
     this.#part("[data-d-name]").textContent = view.name;
@@ -78,6 +160,7 @@ export class ProductDialog {
     }
 
     await this.#update();
+    this.#dialog.scrollTop = 0;
     if (!this.#dialog.open) this.#dialog.showModal();
     document.body.classList.add("no-scroll");
   }
@@ -109,16 +192,18 @@ export class ProductDialog {
     if (!view) return;
     const token = ++this.#updateToken;
 
-    const finish = view.finishes.find((f) => f.name === this.#choice.finishName) ?? view.finishes[0];
+    // Peças sem variação não têm acabamento: o preço é o da própria peça.
+    const finish = view.finishes.find((f) => f.name === this.#choice.finishName) ?? view.finishes[0] ?? null;
     const purchase = await this.#startPurchase.execute({
       productId: view.id,
-      finishName: finish.name,
+      finishName: finish?.name ?? null,
       size: this.#choice.size,
     });
     if (token !== this.#updateToken) return; // escolha mais recente em andamento
 
     this.#part("[data-d-price]").textContent = purchase.total;
-    this.#part("[data-d-install]").textContent = installmentText(finish.price);
+    this.#part("[data-d-buy-price]").textContent = purchase.total;
+    this.#part("[data-d-install]").textContent = installmentText((finish ?? view).price);
     setSafeHref(/** @type {HTMLAnchorElement} */ (this.#part("[data-d-buy]")), purchase.url);
   }
 }

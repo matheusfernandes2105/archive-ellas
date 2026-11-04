@@ -22,8 +22,10 @@ export function toDomain(raw) {
   if (!isPlainObject(raw)) throw new DomainError("Registro de produto inválido.", "INVALID_PRODUCT");
   const data = /** @type {Record<string, any>} */ (raw);
 
-  if (!Array.isArray(data.acabamentos)) {
-    throw new DomainError(`Produto "${String(data.id).slice(0, 60)}": acabamentos ausentes.`, "INVALID_FINISH");
+  // Acabamentos são opcionais: peças sem variação não têm o campo.
+  const rawFinishes = data.acabamentos ?? [];
+  if (!Array.isArray(rawFinishes)) {
+    throw new DomainError(`Produto "${String(data.id).slice(0, 60)}": acabamentos inválidos.`, "INVALID_FINISH");
   }
 
   return Product.create({
@@ -36,7 +38,7 @@ export function toDomain(raw) {
     summary: data.resumo,
     description: data.descricao,
     image: ProductImage.from(data.imagem),
-    finishes: data.acabamentos.map((/** @type {unknown} */ finish) => {
+    finishes: rawFinishes.map((/** @type {unknown} */ finish) => {
       if (!isPlainObject(finish)) throw new DomainError("Acabamento inválido.", "INVALID_FINISH");
       const f = /** @type {Record<string, any>} */ (finish);
       return Finish.create({ name: f.nome, surcharge: Money.fromReais(f.acrescimo ?? 0) });

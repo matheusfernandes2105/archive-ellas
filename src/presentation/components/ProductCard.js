@@ -1,5 +1,6 @@
 import { el, icon } from "../dom.js";
 import { installmentText } from "../format.js";
+import { productImageSources, SIZES } from "../images.js";
 
 /**
  * Card de produto da vitrine.
@@ -7,13 +8,16 @@ import { installmentText } from "../format.js";
  * @param {{ buyUrl: string, index: number, onOpen: (productId: string) => void }} options
  */
 export function createProductCard(view, { buyUrl, index, onOpen }) {
+  const image = productImageSources(view.image);
   const media = el("button", {
     attrs: { type: "button", class: "product-media", "aria-label": `Ver detalhes de ${view.name}` },
     children: [
       view.badge ? el("span", { attrs: { class: "product-tag" }, text: view.badge }) : null,
       el("img", {
         attrs: {
-          src: view.image,
+          src: image.src,
+          srcset: image.srcset,
+          sizes: image.srcset ? SIZES.card : null,
           alt: `${view.name} — ${view.summary}`,
           width: 800,
           height: 1000,

@@ -57,12 +57,25 @@ export class CatalogSection {
     }
   }
 
+  /**
+   * Mostra só os filtros de categorias que têm peças (ex.: sem pulseiras, sem o filtro "Pulseiras").
+   * @param {readonly { category: { code: string } }[]} views
+   */
+  #hideEmptyCategories(views) {
+    const present = new Set(views.map((view) => view.category.code));
+    for (const chip of this.#chips) {
+      const code = chip.dataset.filter ?? ALL_CATEGORIES;
+      chip.hidden = code !== ALL_CATEGORIES && !present.has(code);
+    }
+  }
+
   /** @param {string} category */
   async render(category) {
     const token = ++this.#renderToken;
     const views = await this.#listCatalog.execute({ category });
     const buyLinks = await Promise.all(views.map((view) => this.#startPurchase.execute({ productId: view.id })));
     if (token !== this.#renderToken) return; // um filtro mais novo já foi pedido
+    if (category === ALL_CATEGORIES) this.#hideEmptyCategories(views);
 
     if (views.length === 0) {
       this.#grid.replaceChildren(

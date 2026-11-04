@@ -13,6 +13,18 @@ test("cria um produto válido com preço por acabamento", () => {
   assert.equal(product.acceptsSize("99"), false);
 });
 
+test("peça sem variações é vendida pelo preço base", () => {
+  const product = toDomain(rawProduct({ acabamentos: undefined, tamanhos: undefined }));
+  assert.equal(product.hasFinishes, false);
+  assert.equal(product.defaultFinish, null);
+  assert.equal(product.priceWith(null).toBRL(), "R$ 249,00");
+});
+
+test("peça com variações exige um acabamento para ter preço", () => {
+  const product = toDomain(rawProduct());
+  assert.throws(() => product.priceWith(null), { code: "INVALID_FINISH" });
+});
+
 test("bloqueia imagens fora de assets/produtos/", () => {
   const malicious = [
     "javascript:alert(1)",
@@ -36,7 +48,7 @@ test("bloqueia caracteres de controle e de falsificação nos textos", () => {
 
 test("aplica as invariantes do agregado", () => {
   assert.throws(() => toDomain(rawProduct({ preco: 0 })), { code: "INVALID_PRICE" });
-  assert.throws(() => toDomain(rawProduct({ acabamentos: [] })), { code: "INVALID_FINISH" });
+  assert.throws(() => toDomain(rawProduct({ acabamentos: "Prata" })), { code: "INVALID_FINISH" });
   assert.throws(
     () => toDomain(rawProduct({ acabamentos: [{ nome: "Prata", acrescimo: 0 }, { nome: "Prata", acrescimo: 5 }] })),
     { code: "INVALID_FINISH" },

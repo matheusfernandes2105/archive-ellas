@@ -40,7 +40,8 @@ export function toProductView(product, { installments }) {
     summary: product.summary,
     description: product.description,
     image: product.image,
-    price: finishes[0].price,
+    // Com variações, o preço exibido é o do acabamento padrão; sem, é o preço base.
+    price: finishes[0]?.price ?? priceView(product.basePrice, installments),
     finishes: Object.freeze(finishes),
     sizes: product.sizes,
     sizeLabel: product.sizeLabel,

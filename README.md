@@ -20,11 +20,11 @@ npm test     # testes de domínio, aplicação, infraestrutura e do servidor loc
 | O quê | Arquivo |
 | --- | --- |
 | WhatsApp, Instagram, Spotify, parcelamento | `src/infrastructure/config/store.config.js` |
-| Produtos (nome, preço, acabamentos, tamanhos, imagem) | `src/infrastructure/catalog/products.data.js` |
+| Produtos (nome, preço, descrição, foto) | `src/infrastructure/catalog/products.data.js` |
 | Textos das seções | `index.html` |
 | Cores, fontes e layout | `css/styles.css` |
 
-> **Antes de publicar:** troque o número fictício `5592900000000` pelo WhatsApp real da loja e coloque o link do Instagram.
+> **Antes de publicar:** coloque o link do Instagram da loja. O WhatsApp já aponta para +55 (11) 94170-2706.
 
 Tudo o que você edita é validado quando o site carrega. Se algo estiver errado (preço negativo, imagem fora de `assets/produtos/`, link que não é https etc.), o catálogo não aparece e o motivo é mostrado no console do navegador (F12). Rode `npm test` depois de editar: o teste "o catálogo real e a configuração real são válidos" acusa o erro antes de publicar.
 
@@ -94,9 +94,33 @@ Prefira **Netlify, Cloudflare Pages ou Vercel**: eles aplicam os cabeçalhos de 
 
 O **GitHub Pages** não permite cabeçalhos customizados. Nele, a CSP vale pela tag `<meta>` do `index.html`, e o site se esconde se for aberto dentro de um iframe. Ainda assim, HSTS e `frame-ancestors` não ficam ativos.
 
+## Experiência no celular
+
+O layout é pensado primeiro para o celular (testado em 360 e 390 px de largura):
+- **Hero:** as joias aparecem já na primeira tela, com os botões de ação ao alcance do polegar.
+- **Vitrine:** em 2 colunas, com fotos leves (640px) para economizar dados. Tocar na foto (indicada por "+") abre os detalhes.
+- **Detalhes:** abrem como "bottom sheet". O botão Comprar fica fixo no rodapé e mostra o preço da escolha. Arrastar para baixo fecha a janela.
+- **Universo ELLAS:** as fotos vêm primeiro e os três pilares ficam compactos logo abaixo.
+- **Cabeçalho:** some ao rolar para baixo e volta ao rolar para cima.
+- **WhatsApp flutuante:** só aparece quando não há outro botão de WhatsApp na tela.
+- **Base de toque:**
+  - respeito ao notch e à barra de gestos (`safe-area`);
+  - alvos de toque com pelo menos 44px;
+  - efeitos de hover só em quem tem mouse;
+  - resposta visual ao tocar;
+  - animações desligadas com "reduzir movimento".
+
 ## Produtos e identidade visual
 
-Os 6 produtos são mockados. As imagens em `assets/produtos/*.svg` são ilustrações provisórias. Quando houver fotos reais, salve-as em `assets/produtos/` (proporção 4:5, por exemplo 1200×1500) e atualize o campo `imagem`.
+A primeira coleção tem 6 peças com fotos reais. Elas não têm variação: o cliente só escolhe a peça e compra. **Os preços ainda são provisórios** e estão marcados em `products.data.js`.
+
+**Fotos** (`assets/produtos/`):
+- **Proporção:** 4:5.
+- **Duas versões por peça:** `nome.webp` (1200px) e `nome-640.webp` (versão leve, que o celular baixa).
+- **Metadados:** os EXIF foram removidos.
+- **Para trocar ou adicionar uma foto:** gere as duas versões com esses nomes. O `npm test` avisa se faltar alguma.
+
+**Variações:** o domínio continua aceitando acabamentos e tamanhos (campos `acabamentos` e `tamanhos`), caso uma peça futura precise.
 
 Guia de marca:
 - **Cores:** Manteiga `#FFF1B5`, Vinho `#5D211E`, Cacau `#2F1B1A`, Linho `#F8F5E7`, Grafite `#37333A` e Oliva `#5A5E27`, além de tons suaves derivados para os fundos.

@@ -27,12 +27,8 @@ export class PurchaseMessage {
     ensure(intent instanceof PurchaseIntent, "Intenção de compra inválida.", "INVALID_MESSAGE");
     const { product, finish, size } = intent;
 
-    const lines = [
-      "Olá, ELLAS! Vi no site e quero comprar esta peça:",
-      "",
-      `*${product.name}* (${product.sku})`,
-      `Acabamento: ${finish.name}`,
-    ];
+    const lines = ["Olá, ELLAS! Vi no site e quero comprar esta peça:", "", `*${product.name}* (${product.sku})`];
+    if (finish) lines.push(`Acabamento: ${finish.name}`);
     if (product.hasSizes) {
       lines.push(`${product.sizeLabel}: ${size ?? "preciso de ajuda para escolher"}`);
     }

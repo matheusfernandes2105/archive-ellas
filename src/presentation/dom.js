@@ -13,7 +13,7 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 
 const ALLOWED_ATTRIBUTES = new Set([
   "class", "id", "type", "name", "value", "for", "role", "hidden",
-  "href", "target", "rel", "src", "alt", "width", "height", "loading", "decoding",
+  "href", "target", "rel", "src", "srcset", "sizes", "alt", "width", "height", "loading", "decoding",
   "aria-label", "aria-pressed", "aria-hidden", "aria-live",
   "data-categoria", "data-product-id",
 ]);
@@ -32,6 +32,17 @@ export function isSafeUrl(value) {
 }
 
 /**
+ * srcset: cada candidato ("url 640w") precisa ser uma URL permitida.
+ * @param {string} value
+ */
+export function isSafeSrcset(value) {
+  return value
+    .split(",")
+    .map((candidate) => candidate.trim().split(/\s+/))
+    .every(([url, descriptor, ...rest]) => rest.length === 0 && isSafeUrl(url ?? "") && /^\d+w$/.test(descriptor ?? ""));
+}
+
+/**
  * Cria um elemento HTML.
  * @param {string} tag
  * @param {{ attrs?: Record<string, string | number | boolean | null | undefined>, text?: string, children?: (Node | null | undefined | false)[] }} [options]
@@ -43,6 +54,7 @@ export function el(tag, { attrs = {}, text, children = [] } = {}) {
     if (!ALLOWED_ATTRIBUTES.has(name)) throw new Error(`Atributo não permitido: ${name}`);
     const str = value === true ? "" : String(value);
     if ((name === "href" || name === "src") && !isSafeUrl(str)) throw new Error(`URL não permitida em ${name}.`);
+    if (name === "srcset" && !isSafeSrcset(str)) throw new Error("URL não permitida em srcset.");
     node.setAttribute(name, str);
   }
   if (text != null) node.textContent = text;

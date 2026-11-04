@@ -14,8 +14,8 @@ const MAX_SIZES = 20;
  * Peça do catálogo (raiz de agregado).
  *
  * Invariantes:
- * - tem ao menos um acabamento, sem nomes repetidos;
- * - o preço final de todo acabamento é positivo;
+ * - variações são opcionais: sem acabamentos, a peça é vendida pelo preço base;
+ * - acabamentos, quando existem, não repetem nome e todo preço final é positivo;
  * - tamanhos, quando existem, não se repetem;
  * - todo texto é validado (sem caracteres de controle ou de falsificação).
  */
@@ -37,7 +37,7 @@ export class Product {
    * @param {{
    *   id: ProductId, sku: Sku, name: string, category: Category, badge?: string | null,
    *   basePrice: Money, summary: string, description: string, image: ProductImage,
-   *   finishes: Finish[], sizes?: string[] | null, sizeLabel?: string
+   *   finishes?: Finish[] | null, sizes?: string[] | null, sizeLabel?: string
    * }} props
    */
   constructor(props) {
@@ -74,7 +74,8 @@ export class Product {
    * @param {Money} basePrice
    */
   static #validateFinishes(finishes, basePrice) {
-    ensure(Array.isArray(finishes) && finishes.length >= 1, "Produto precisa de ao menos um acabamento.", "INVALID_FINISH");
+    if (finishes == null) return Object.freeze([]);
+    ensure(Array.isArray(finishes), "Lista de acabamentos inválida.", "INVALID_FINISH");
     ensure(finishes.length <= MAX_FINISHES, `Produto aceita no máximo ${MAX_FINISHES} acabamentos.`, "INVALID_FINISH");
     const names = new Set();
     for (const finish of finishes) {
@@ -137,8 +138,13 @@ export class Product {
     return this.#finishes;
   }
 
+  /** @returns {Finish | null} null quando a peça não tem variações */
   get defaultFinish() {
-    return this.#finishes[0];
+    return this.#finishes[0] ?? null;
+  }
+
+  get hasFinishes() {
+    return this.#finishes.length > 0;
   }
 
   /** @returns {readonly string[] | null} */
@@ -174,8 +180,16 @@ export class Product {
     return this.#sizes !== null && typeof size === "string" && this.#sizes.includes(size);
   }
 
-  /** @param {Finish} finish */
+  /**
+   * Preço final. Sem acabamento (null), vale o preço base — permitido
+   * apenas para peças sem variações.
+   * @param {Finish | null} finish
+   */
   priceWith(finish) {
+    if (finish === null) {
+      ensure(!this.hasFinishes, "Escolha um acabamento para esta peça.", "INVALID_FINISH");
+      return this.#basePrice;
+    }
     ensure(this.offers(finish), "Acabamento indisponível para esta peça.", "INVALID_FINISH");
     return this.#basePrice.add(finish.surcharge);
   }

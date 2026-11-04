@@ -12,7 +12,7 @@ export class PurchaseIntent {
 
   /**
    * @param {Product} product
-   * @param {import("../catalog/Finish.js").Finish} finish
+   * @param {import("../catalog/Finish.js").Finish | null} finish  null em peças sem variações
    * @param {string | null} size
    */
   constructor(product, finish, size) {
@@ -24,13 +24,17 @@ export class PurchaseIntent {
 
   /**
    * @param {{ product: Product, finishName?: string | null, size?: string | null }} choice
-   *   Sem acabamento, usa o padrão da peça. Sem tamanho, o cliente pede ajuda para escolher.
+   *   Sem acabamento, usa o padrão da peça (ou nenhum, se ela não tem variações).
+   *   Sem tamanho, o cliente pede ajuda para escolher.
    */
   static create({ product, finishName = null, size = null }) {
     ensure(product instanceof Product, "Produto inválido.", "INVALID_PURCHASE");
 
-    const finish = finishName == null ? product.defaultFinish : product.findFinish(finishName);
-    ensure(finish !== null, "Acabamento indisponível para esta peça.", "INVALID_FINISH");
+    let finish = product.defaultFinish;
+    if (finishName != null) {
+      finish = product.findFinish(finishName);
+      ensure(finish !== null, "Acabamento indisponível para esta peça.", "INVALID_FINISH");
+    }
 
     let chosenSize = null;
     if (size != null && size !== "") {

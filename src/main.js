@@ -15,6 +15,7 @@ import { loadStoreConfig } from "./infrastructure/config/loadStoreConfig.js";
 import { storeConfig } from "./infrastructure/config/store.config.js";
 import { WhatsAppGateway } from "./infrastructure/messaging/WhatsAppGateway.js";
 import { CatalogSection, renderCatalogUnavailable } from "./presentation/components/CatalogSection.js";
+import { initFloatingContact } from "./presentation/components/FloatingContact.js";
 import { ProductDialog } from "./presentation/components/ProductDialog.js";
 import { initScrollEffects } from "./presentation/components/ScrollEffects.js";
 import { initSiteHeader } from "./presentation/components/SiteHeader.js";
@@ -39,6 +40,9 @@ async function bootstrap() {
 
   initSiteHeader(required(document, "[data-header]"));
   initScrollEffects();
+  initFloatingContact(required(document, ".wa-float"), {
+    hideWhenVisible: [".hero-actions", "[data-product-grid]", ".howto-cta", ".site-footer"],
+  });
 
   const grid = /** @type {HTMLElement} */ (required(document, "[data-product-grid]"));
   const filters = /** @type {HTMLElement} */ (required(document, "[data-filters]"));

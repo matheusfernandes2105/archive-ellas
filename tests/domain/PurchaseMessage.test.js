@@ -26,6 +26,24 @@ test("sem tamanho escolhido, pede ajuda; sem tamanhos na peça, omite a linha", 
   assert.equal(PurchaseMessage.forPurchase(withoutSizes).text.includes("Tamanho"), false);
 });
 
+test("peça sem variações: mensagem só com peça, código e valor", () => {
+  const product = toDomain(rawProduct({ acabamentos: undefined, tamanhos: undefined }));
+  const { text } = PurchaseMessage.forPurchase(PurchaseIntent.create({ product }));
+  assert.equal(
+    text,
+    [
+      "Olá, ELLAS! Vi no site e quero comprar esta peça:",
+      "",
+      "*Anel Teste* (EL-99)",
+      "Valor: R$ 249,00",
+      "",
+      "Ainda está disponível? Pode me passar as formas de pagamento e entrega?",
+    ].join("\n"),
+  );
+  assert.throws(() => PurchaseIntent.create({ product, finishName: "Prata 925" }), { code: "INVALID_FINISH" });
+  assert.throws(() => PurchaseIntent.create({ product, size: "16" }), { code: "INVALID_SIZE" });
+});
+
 test("usa o rótulo de tamanho da peça", () => {
   const product = toDomain(rawProduct({ tamanhos: ["45 cm"], rotuloTamanho: "Comprimento" }));
   const intent = PurchaseIntent.create({ product, size: "45 cm" });

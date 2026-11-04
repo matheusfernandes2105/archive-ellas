@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 import { WhatsAppNumber } from "../../src/domain/contact/WhatsAppNumber.js";
 import { PurchaseIntent } from "../../src/domain/purchase/PurchaseIntent.js";
 import { PurchaseMessage } from "../../src/domain/purchase/PurchaseMessage.js";
@@ -15,6 +18,17 @@ test("o catálogo real e a configuração real são válidos", async () => {
   const repository = new StaticProductRepository(productsData);
   assert.equal((await repository.findAll()).length, productsData.length);
   assert.ok(loadStoreConfig(storeConfig));
+});
+
+test("toda foto do catálogo existe, com a versão leve de 640px para o celular", () => {
+  const root = fileURLToPath(new URL("../../", import.meta.url));
+  for (const product of productsData) {
+    assert.ok(existsSync(join(root, product.imagem)), `foto ausente: ${product.imagem}`);
+    if (product.imagem.endsWith(".webp")) {
+      const small = product.imagem.replace(/\.webp$/, "-640.webp");
+      assert.ok(existsSync(join(root, small)), `versão de 640px ausente: ${small}`);
+    }
+  }
 });
 
 test("o repositório recusa ids e SKUs repetidos", () => {

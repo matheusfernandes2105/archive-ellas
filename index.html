@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <!--
     Política de segurança (CSP): só carrega recursos do próprio site, sem scripts
     ou estilos inline e com Trusted Types (bloqueia innerHTML/eval).
@@ -87,10 +87,10 @@
             <path class="rb-3" d="M105 210a95 95 0 0 1 190 0"/>
           </svg>
           <figure class="arch arch-main">
-            <img src="assets/produtos/colar-caramelo.svg" alt="" width="800" height="1000">
+            <img src="assets/produtos/anel-ventos-do-sul.webp" srcset="assets/produtos/anel-ventos-do-sul-640.webp 640w, assets/produtos/anel-ventos-do-sul.webp 1200w" sizes="(max-width: 699px) 50vw, 340px" alt="" width="1200" height="1500" fetchpriority="high">
           </figure>
           <figure class="arch arch-small">
-            <img src="assets/produtos/anel-raiz.svg" alt="" width="800" height="1000">
+            <img src="assets/produtos/argolas-atos-de-luz-640.webp" alt="" width="640" height="800">
           </figure>
           <div class="seal">
             <svg viewBox="0 0 200 200" class="seal-ring">
@@ -123,7 +123,7 @@
           </div>
           <p class="section-lede reveal">
             Escolha sua peça e toque em <strong>Comprar</strong>: abrimos o WhatsApp com uma mensagem pronta,
-            com o nome, o acabamento e o valor. É só enviar.
+            com o nome e o valor da peça. É só enviar.
           </p>
         </header>
 
@@ -175,48 +175,49 @@
     <!-- ============ UNIVERSO ============ -->
     <section class="section universe" id="universo">
       <div class="container">
-        <header class="section-head">
-          <div>
-            <p class="eyebrow eyebrow-dark reveal">Universo da marca</p>
-            <h2 class="section-title reveal">Cores que contam quem somos</h2>
+        <div class="universe-feature">
+          <div class="universe-media reveal" aria-hidden="true">
+            <figure class="universe-photo universe-photo--main">
+              <img src="assets/produtos/colar-elegia-de-prata-640.webp" srcset="assets/produtos/colar-elegia-de-prata-640.webp 640w, assets/produtos/colar-elegia-de-prata.webp 1200w" sizes="(max-width: 699px) 70vw, 420px" alt="" width="1200" height="1500" loading="lazy" decoding="async">
+            </figure>
+            <figure class="universe-photo universe-photo--small">
+              <img src="assets/produtos/brincos-sinfonia-fluida-640.webp" alt="" width="640" height="800" loading="lazy" decoding="async">
+            </figure>
           </div>
-          <p class="section-lede reveal">
-            Cada tom da ELLAS carrega um sentimento. Juntos, constroem um universo quente, profundo e atemporal.
-          </p>
-        </header>
 
-        <ul class="palette">
-          <li class="swatch swatch--manteiga reveal">
-            <span class="swatch-hex">#FFF1B5</span>
-            <h3>Manteiga</h3>
-            <p>Calor, sensibilidade e luminosidade. Acolhimento e o lado humano da marca.</p>
-          </li>
-          <li class="swatch swatch--vinho reveal">
-            <span class="swatch-hex">#5D211E</span>
-            <h3>Vinho</h3>
-            <p>Expressão, profundidade e personalidade. A intensidade e a força da identidade.</p>
-          </li>
-          <li class="swatch swatch--cacau reveal">
-            <span class="swatch-hex">#2F1B1A</span>
-            <h3>Cacau</h3>
-            <p>Acolhimento, autenticidade e permanência. A beleza do que resiste ao tempo.</p>
-          </li>
-          <li class="swatch swatch--oliva reveal">
-            <span class="swatch-hex">#5A5E27</span>
-            <h3>Oliva</h3>
-            <p>Natureza, equilíbrio e conexão. O olhar para o essencial e o mundo ao redor.</p>
-          </li>
-          <li class="swatch swatch--grafite reveal">
-            <span class="swatch-hex">#37333A</span>
-            <h3>Grafite</h3>
-            <p>Elegância, contraste e modernidade. Equilibra e destaca os demais elementos.</p>
-          </li>
-          <li class="swatch swatch--linho reveal">
-            <span class="swatch-hex">#F8F5E7</span>
-            <h3>Linho</h3>
-            <p>Leveza, delicadeza e atemporalidade. Respiro visual que valoriza cada detalhe.</p>
-          </li>
-        </ul>
+          <div class="universe-copy">
+            <p class="eyebrow eyebrow-dark reveal">Universo ELLAS</p>
+            <h2 class="section-title reveal">Joias para serem vividas</h2>
+            <p class="section-lede reveal">
+              Cada peça nasce de uma ideia, de uma memória ou de um sentimento e ganha forma para acompanhar
+              quem a usa, dia após dia.
+            </p>
+
+            <ul class="pillars">
+              <li class="pillar reveal">
+                <span class="pillar-mark" aria-hidden="true"><span class="mono"></span></span>
+                <div>
+                  <h3>Formas orgânicas</h3>
+                  <p>Curvas, relevos e texturas inspirados na natureza: no vento, na água, no movimento.</p>
+                </div>
+              </li>
+              <li class="pillar reveal">
+                <span class="pillar-mark" aria-hidden="true"><span class="mono"></span></span>
+                <div>
+                  <h3>Desenho autoral</h3>
+                  <p>Peças criadas por nós, longe da produção em massa, com personalidade e história.</p>
+                </div>
+              </li>
+              <li class="pillar reveal">
+                <span class="pillar-mark" aria-hidden="true"><span class="mono"></span></span>
+                <div>
+                  <h3>Para todos os dias</h3>
+                  <p>Atemporais e confortáveis, feitas para ganhar significado com o tempo.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
 
         <div class="senses">
           <article class="sense-card sense-scent reveal">
@@ -232,7 +233,7 @@
               construir o universo sensorial da marca.</p>
             <span class="radio-cta">
               <span class="vinyl" aria-hidden="true"></span>
-              Ouvir a playlist no Spotify
+              Ouvir no Spotify
               <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
             </span>
           </a>
@@ -251,7 +252,7 @@
           <li class="step reveal">
             <span class="step-num">01</span>
             <h3>Escolha a peça</h3>
-            <p>Veja os detalhes, o acabamento e, quando houver, o tamanho ideal para você.</p>
+            <p>Toque na foto para ver os detalhes e a história de cada joia.</p>
           </li>
           <li class="step reveal">
             <span class="step-num">02</span>
@@ -292,7 +293,6 @@
     </div>
     <div class="container footer-base">
       <p>© <span data-year></span> ELLAS. Todos os direitos reservados.</p>
-      <p>Imagens ilustrativas.</p>
     </div>
   </footer>
 
@@ -303,10 +303,12 @@
 
   <!-- ============ MODAL DE PRODUTO ============ -->
   <dialog class="product-dialog" data-dialog aria-labelledby="dialog-title">
+    <!-- No celular, a janela abre como "bottom sheet": arraste a alça para baixo para fechar -->
+    <div class="dialog-handle" data-dialog-handle aria-hidden="true"><span></span></div>
+    <button type="button" class="dialog-close" data-dialog-close aria-label="Fechar">
+      <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+    </button>
     <div class="dialog-body">
-      <button type="button" class="dialog-close" data-dialog-close aria-label="Fechar">
-        <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
-      </button>
       <figure class="dialog-media">
         <img data-d-img alt="" width="800" height="1000">
       </figure>
@@ -327,11 +329,16 @@
           <p class="option-hint">Não sabe o seu tamanho? A gente te ajuda pelo WhatsApp.</p>
         </fieldset>
 
-        <a class="btn btn-wa btn-block" data-d-buy href="#" target="_blank" rel="noopener noreferrer">
-          <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
-          Comprar pelo WhatsApp
-        </a>
         <p class="dialog-sku" data-d-sku></p>
+
+        <!-- Barra de compra fixa no rodapé da janela: sempre visível, com o preço da escolha -->
+        <div class="dialog-buy">
+          <a class="btn btn-wa btn-block" data-d-buy href="#" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
+            <span>Comprar<span class="buy-channel"> pelo WhatsApp</span></span>
+            <span class="buy-price" data-d-buy-price></span>
+          </a>
+        </div>
       </div>
     </div>
   </dialog>
