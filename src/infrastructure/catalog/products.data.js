@@ -1,13 +1,17 @@
 /**
- * Catálogo mockado da primeira coleção ELLAS.
+ * Catálogo mockado da primeira coleção ELLAS — edite aqui.
  *
- * Para adicionar uma peça, copie um objeto e ajuste os campos:
+ * Os dados são validados pelo domínio ao carregar o site: um campo inválido
+ * (preço negativo, imagem fora de assets/produtos/, SKU fora do padrão etc.)
+ * impede o catálogo de aparecer e o erro é mostrado no console do navegador.
+ *
  * - categoria: "aneis" | "brincos" | "colares" | "pulseiras"
- * - acabamentos: lista de opções; "acrescimo" soma ao preço base.
- * - tamanhos: opcional (anéis). Remova o campo para peças sem tamanho.
- * - imagem: caminho da foto (pode ser .jpg/.png/.webp quando houver fotos reais).
+ * - preco e acrescimo: em reais, com até 2 casas decimais. O acréscimo soma ao preço base
+ *   (use valor negativo para desconto).
+ * - tamanhos: opcional (anéis/colares). Remova o campo para peças sem tamanho.
+ * - imagem: arquivo dentro de assets/produtos/ (svg, png, jpg, webp ou avif).
  */
-window.ELLAS_PRODUCTS = [
+export const productsData = Object.freeze([
   {
     id: "anel-raiz",
     sku: "EL-01",
@@ -102,4 +106,4 @@ window.ELLAS_PRODUCTS = [
     acabamentos: [{ nome: "Prata 925 + banho de ouro 18k", acrescimo: 0 }],
     tamanhos: ["12", "14", "16", "18", "20", "22"],
   },
-];
+]);

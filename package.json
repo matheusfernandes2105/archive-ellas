@@ -1,0 +1,14 @@
+{
+  "name": "ellas-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site da ELLAS — joias autorais, com compra pelo WhatsApp.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node scripts/serve.js",
+    "test": "node --test"
+  }
+}
