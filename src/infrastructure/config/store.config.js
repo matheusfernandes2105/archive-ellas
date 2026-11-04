@@ -9,7 +9,7 @@ export const storeConfig = Object.freeze({
   whatsapp: "5511941702706", // +55 (11) 94170-2706
 
   // Só são aceitos links https destes domínios (ver loadStoreConfig.js).
-  instagram: "https://www.instagram.com/",
+  instagram: "https://www.instagram.com/archive.ellas/",
   spotify: "https://open.spotify.com/playlist/3ny5pydRiXEcV7mpmJIcg1",
 
   // Parcelamento sem juros exibido nos produtos (1 = não exibir).

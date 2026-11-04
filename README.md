@@ -24,7 +24,7 @@ npm test     # testes de domínio, aplicação, infraestrutura e do servidor loc
 | Textos das seções | `index.html` |
 | Cores, fontes e layout | `css/styles.css` |
 
-> **Antes de publicar:** coloque o link do Instagram da loja. O WhatsApp já aponta para +55 (11) 94170-2706.
+> **Antes de publicar:** troque os preços provisórios em `src/infrastructure/catalog/products.data.js`. O WhatsApp aponta para +55 (11) 94170-2706 e o Instagram para @archive.ellas.
 
 Tudo o que você edita é validado quando o site carrega. Se algo estiver errado (preço negativo, imagem fora de `assets/produtos/`, link que não é https etc.), o catálogo não aparece e o motivo é mostrado no console do navegador (F12). Rode `npm test` depois de editar: o teste "o catálogo real e a configuração real são válidos" acusa o erro antes de publicar.
 
